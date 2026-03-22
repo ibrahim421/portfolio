@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="fr" data-lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ibrahim Mahamat - Cybersécurité &amp; Data</title>
+<meta name="description" content="Portfolio d'Ibrahim Mahamat - Développeur, Cybersécurité & Data. Étudiant en BUT Informatique à l'IUT d'Orsay.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-0: #060a11;
+  --bg-1: #0c1220;
+  --bg-2: #131c30;
+  --bg-3: #1a2540;
+  --bg-glass: rgba(12,18,32,0.72);
+  --border-dim: #1e2d4a;
+  --border-med: #2a3f66;
+  --border-bright: #3b82f6;
+  --t1: #f0f4fc;
+  --t2: #b4c0d8;
+  --t3: #7889a8;
+  --t4: #4e5f7e;
+  --cyan: #22d3ee;
+  --blue: #3b82f6;
+  --green: #34d399;
+  --amber: #fbbf24;
+  --red: #f87171;
+  --violet: #a78bfa;
+  --glow-cyan: 0 0 30px rgba(34,211,238,0.12), 0 0 80px rgba(34,211,238,0.05);
+  --glow-blue: 0 0 24px rgba(59,130,246,0.14);
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'Outfit', sans-serif;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body {
+  background: var(--bg-0); color: var(--t1); font-family: var(--sans);
+  line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+ul { list-style: none; }
+
+/* atmosphere */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 900px 600px at 20% 10%, rgba(34,211,238,0.045) 0%, transparent 70%),
+    radial-gradient(ellipse 700px 500px at 80% 80%, rgba(59,130,246,0.04) 0%, transparent 70%);
+}
+body::after {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(34,211,238,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34,211,238,0.018) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+.noise {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat; background-size: 200px;
+}
+
+/* NAV */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  background: var(--bg-glass); backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid var(--border-dim); transition: box-shadow 0.3s;
+}
+.nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.4); }
+.nav-inner {
+  max-width: 1360px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px; padding: 0 1.5rem;
+}
+.nav-logo {
+  font-family: var(--mono); font-size: 0.82rem; font-weight: 600;
+  color: var(--cyan); display: flex; align-items: center; gap: 6px;
+}
+.nav-logo .pr { color: var(--t4); }
+.nav-logo .cur {
+  display: inline-block; width: 8px; height: 16px;
+  background: var(--cyan); border-radius: 1px; animation: blink 1.1s steps(2) infinite;
+}
+@keyframes blink { 0% { opacity: 1; } 100% { opacity: 0; } }
+
+.nav-links { display: flex; gap: 2px; }
+.nav-links a {
+  font-family: var(--mono); font-size: 0.72rem; font-weight: 500;
+  color: var(--t3); padding: 0.45rem 0.7rem; border-radius: var(--r-sm);
+  transition: all 0.2s var(--ease); letter-spacing: 0.4px; position: relative;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--cyan); background: rgba(34,211,238,0.06); }
+.nav-links a.active::after {
+  content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+  width: 4px; height: 4px; border-radius: 50%; background: var(--cyan);
+}
+.nav-right { display: flex; align-items: center; gap: 0.75rem; }
+.status-badge {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 0.65rem; font-weight: 500;
+  color: var(--green); padding: 0.3rem 0.65rem; border-radius: 20px;
+  border: 1px solid rgba(52,211,153,0.2); background: rgba(52,211,153,0.06);
+}
+.status-badge .dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+  box-shadow: 0 0 8px rgba(52,211,153,0.5); animation: pg 2s ease-in-out infinite;
+}
+@keyframes pg { 0%,100% { opacity:1; } 50% { opacity:0.35; } }
+.lang-toggle {
+  font-family: var(--mono); font-size: 0.7rem; font-weight: 600;
+  color: var(--t3); background: var(--bg-2); border: 1px solid var(--border-dim);
+  padding: 0.3rem 0.6rem; border-radius: var(--r-sm); cursor: pointer;
+  transition: all 0.2s; display: flex; align-items: center; gap: 4px;
+}
+.lang-toggle:hover { color: var(--cyan); border-color: var(--border-med); }
+.nav-mob {
+  display: none; background: none; border: none; cursor: pointer;
+  width: 32px; height: 32px; flex-direction: column; align-items: center;
+  justify-content: center; gap: 5px;
+}
+.nav-mob span {
+  display: block; width: 18px; height: 2px; background: var(--t3); border-radius: 2px;
+  transition: all 0.3s var(--ease);
+}
+.nav-mob.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-mob.open span:nth-child(2) { opacity: 0; }
+.nav-mob.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+@media (max-width: 900px) {
+  .nav-mob { display: flex; }
+  .nav-links {
+    position: fixed; top: 64px; left: 0; right: 0;
+    background: var(--bg-glass); backdrop-filter: blur(24px);
+    flex-direction: column; padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-dim);
+    transform: translateY(-120%); opacity: 0; transition: all 0.35s var(--ease);
+  }
+  .nav-links.open { transform: translateY(0); opacity: 1; }
+  .status-badge { display: none; }
+}
+
+/* LAYOUT */
+.wrap { position: relative; z-index: 2; max-width: 1360px; margin: 0 auto; padding: 88px 1.5rem 3rem; }
+section { margin-bottom: 5rem; }
+.sh {
+  display: flex; align-items: center; gap: 0.7rem;
+  margin-bottom: 2rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border-dim);
+}
+.sh .si { width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; font-size: 1rem; flex-shrink: 0; }
+.sh h2 { font-family: var(--mono); font-size: 0.85rem; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; }
+.sh .sl { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-dim), transparent); }
+.sh .st { font-family: var(--mono); font-size: 0.6rem; color: var(--t4); background: var(--bg-2); padding: 0.2rem 0.55rem; border-radius: 3px; border: 1px solid var(--border-dim); }
+
+/* HERO */
+.hero { display: grid; grid-template-columns: 1fr 380px; gap: 1.75rem; padding-top: 0.5rem; }
+.hero-main {
+  background: var(--bg-1); border: 1px solid var(--border-dim);
+  border-radius: var(--r-lg); padding: 2.75rem; position: relative; overflow: hidden;
+}
+.hero-main::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet));
+}
+.hero-main::after {
+  content: ''; position: absolute; top: -60px; right: -60px;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(34,211,238,0.08) 0%, transparent 70%); pointer-events: none;
+}
+.hero-upper { display: flex; align-items: flex-start; gap: 1.75rem; margin-bottom: 1.5rem; }
+.hero-photo {
+  width: 130px; height: 130px; border-radius: var(--r-md);
+  border: 2px solid var(--border-med); overflow: hidden; flex-shrink: 0;
+  background: var(--bg-3); display: grid; place-items: center; position: relative;
+}
+.hero-photo::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  box-shadow: inset 0 0 20px rgba(34,211,238,0.08);
+}
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+.hero-photo svg { width: 64px; height: 64px; opacity: 0.35; }
+.hero-tb { flex: 1; }
+.hero-term { font-family: var(--mono); font-size: 0.68rem; color: var(--t4); margin-bottom: 0.6rem; }
+.hero-term .g { color: var(--green); }
+.hero-name {
+  font-family: var(--sans); font-size: 2.6rem; font-weight: 800;
+  letter-spacing: -1px; line-height: 1.1; margin-bottom: 0.45rem;
+}
+.hero-name span {
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-title { font-size: 1.1rem; font-weight: 500; color: var(--cyan); }
+.hero-desc { font-size: 0.92rem; color: var(--t2); line-height: 1.75; max-width: 620px; margin-top: 1rem; }
+.hero-desc strong { color: var(--cyan); }
+.hero-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.25rem; }
+
+.tag {
+  font-family: var(--mono); font-size: 0.67rem; font-weight: 500;
+  padding: 0.28rem 0.6rem; border-radius: 4px; border: 1px solid;
+  display: inline-flex; align-items: center; gap: 0.3rem; transition: all 0.2s var(--ease);
+}
+.tag-cy { color: var(--cyan); border-color: rgba(34,211,238,0.25); background: rgba(34,211,238,0.06); }
+.tag-bl { color: var(--blue); border-color: rgba(59,130,246,0.25); background: rgba(59,130,246,0.06); }
+.tag-gn { color: var(--green); border-color: rgba(52,211,153,0.25); background: rgba(52,211,153,0.06); }
+.tag-am { color: var(--amber); border-color: rgba(251,191,36,0.25); background: rgba(251,191,36,0.06); }
+.tag-vi { color: var(--violet); border-color: rgba(167,139,250,0.25); background: rgba(167,139,250,0.06); }
+.tag-rd { color: var(--red); border-color: rgba(248,113,113,0.25); background: rgba(248,113,113,0.06); }
+
+.hero-side { display: flex; flex-direction: column; gap: 0.85rem; }
+.card {
+  background: var(--bg-1); border: 1px solid var(--border-dim);
+  border-radius: var(--r-md); padding: 1.35rem; transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+.card:hover { border-color: var(--border-bright); box-shadow: var(--glow-blue); }
+.card .cl { font-family: var(--mono); font-size: 0.6rem; font-weight: 600; color: var(--t4); text-transform: uppercase; letter-spacing: 1.1px; margin-bottom: 0.55rem; }
+.card .cb { font-family: var(--sans); font-size: 1.75rem; font-weight: 800; }
+.card .cs { font-size: 0.78rem; color: var(--t3); margin-top: 0.15rem; }
+.ql { display: flex; flex-direction: column; gap: 0.4rem; }
+.ql a {
+  display: flex; align-items: center; gap: 0.55rem;
+  font-family: var(--mono); font-size: 0.72rem; color: var(--cyan);
+  padding: 0.35rem 0; transition: color 0.2s;
+}
+.ql a:hover { color: var(--blue); }
+.ql .qi { width: 20px; text-align: center; font-size: 0.8rem; color: var(--t4); }
+
+@media (max-width: 960px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-side { flex-direction: row; flex-wrap: wrap; }
+  .hero-side > * { flex: 1 1 220px; }
+  .hero-name { font-size: 2rem; }
+}
+@media (max-width: 600px) {
+  .hero-upper { flex-direction: column; align-items: center; text-align: center; }
+  .hero-tags { justify-content: center; }
+  .hero-desc { text-align: center; }
+}
+
+/* ABOUT */
+.ag { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.ac {
+  background: var(--bg-1); border: 1px solid var(--border-dim); border-radius: var(--r-md);
+  padding: 1.75rem; transition: border-color 0.25s, box-shadow 0.25s;
+}
+.ac:hover { border-color: var(--border-bright); box-shadow: var(--glow-blue); }
+.ac h3 { font-family: var(--mono); font-size: 0.78rem; font-weight: 600; color: var(--cyan); margin-bottom: 0.75rem; }
+.ac p { font-size: 0.88rem; color: var(--t2); line-height: 1.7; }
+.ac-full { grid-column: 1 / -1; }
+@media (max-width: 700px) { .ag { grid-template-columns: 1fr; } }
+
+/* SKILLS */
+.sg { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1rem; }
+.sm {
+  background: var(--bg-1); border: 1px solid var(--border-dim); border-radius: var(--r-md);
+  padding: 1.5rem; transition: border-color 0.25s, box-shadow 0.25s;
+}
+.sm:hover { border-color: var(--border-bright); box-shadow: var(--glow-blue); }
+.sm .smh { display: flex; align-items: center; gap: 0.55rem; margin-bottom: 1rem; }
+.sm .smi { width: 30px; height: 30px; border-radius: 7px; display: grid; place-items: center; font-size: 0.9rem; flex-shrink: 0; }
+.sm .smt { font-family: var(--mono); font-size: 0.76rem; font-weight: 600; }
+.si2 { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.sk {
+  font-family: var(--mono); font-size: 0.67rem; font-weight: 500;
+  padding: 0.25rem 0.55rem; border-radius: 4px;
+  background: var(--bg-2); border: 1px solid var(--border-dim); color: var(--t3); transition: all 0.2s var(--ease);
+}
+.sk:hover { color: var(--cyan); border-color: rgba(34,211,238,0.3); background: rgba(34,211,238,0.05); }
+.sb { margin-top: 0.85rem; display: flex; flex-direction: column; gap: 0.55rem; }
+.sbr { display: flex; align-items: center; gap: 0.65rem; }
+.sbl { font-family: var(--mono); font-size: 0.65rem; color: var(--t3); width: 90px; flex-shrink: 0; }
+.sbt { flex: 1; height: 6px; background: var(--bg-3); border-radius: 3px; overflow: hidden; }
+.sbf { height: 100%; border-radius: 3px; width: 0; transition: width 1.2s var(--ease); }
+.slv {
+  font-family: var(--mono); font-size: 0.6rem; font-weight: 600;
+  padding: 0.15rem 0.5rem; border-radius: 3px; flex-shrink: 0;
+}
+.slv-m { color: var(--green); background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); }
+.slv-p { color: var(--blue); background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); }
+.slv-n { color: var(--t4); background: var(--bg-2); border: 1px solid var(--border-dim); }
+
+/* PROJECTS */
+.pg2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.25rem; }
+@media (max-width: 860px) { .pg2 { grid-template-columns: 1fr; } }
+.pc {
+  background: var(--bg-1); border: 1px solid var(--border-dim); border-radius: var(--r-md);
+  overflow: hidden; transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.pc:hover { border-color: var(--border-bright); box-shadow: var(--glow-blue); transform: translateY(-3px); }
+.pc .pt {
+  padding: 0.55rem 1.2rem; border-bottom: 1px solid var(--border-dim);
+  display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.01);
+}
+.pc .pid { font-family: var(--mono); font-size: 0.62rem; color: var(--t4); }
+.pc .pst {
+  font-family: var(--mono); font-size: 0.58rem; font-weight: 600;
+  padding: 0.15rem 0.5rem; border-radius: 3px;
+  color: var(--green); background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2);
+}
+.pc .pimg {
+  width: 100%; height: 200px; overflow: hidden; position: relative;
+  background: var(--bg-2); border-bottom: 1px solid var(--border-dim);
+}
+.pc .pimg img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s var(--ease); }
+.pc:hover .pimg img { transform: scale(1.04); }
+.pph {
+  width: 100%; height: 100%; display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--bg-2), var(--bg-3)); position: relative; overflow: hidden;
+}
+.pph::before {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(34,211,238,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34,211,238,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+.pph svg { width: 48px; height: 48px; opacity: 0.15; }
+.pc .pb { padding: 1.5rem 1.3rem; }
+.pc h3 { font-size: 1.08rem; font-weight: 700; margin-bottom: 0.55rem; line-height: 1.35; }
+.psr { margin-bottom: 1rem; }
+.psri { display: flex; gap: 0.6rem; margin-bottom: 0.45rem; font-size: 0.82rem; color: var(--t2); line-height: 1.6; }
+.psrl {
+  font-family: var(--mono); font-size: 0.62rem; font-weight: 600;
+  color: var(--t4); text-transform: uppercase; letter-spacing: 0.8px; min-width: 72px; padding-top: 3px; flex-shrink: 0;
+}
+.pc .pct { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1rem; }
+.pc .pa { display: flex; gap: 0.6rem; }
+.btn {
+  font-family: var(--mono); font-size: 0.7rem; font-weight: 600;
+  padding: 0.45rem 0.9rem; border-radius: var(--r-sm); border: 1px solid;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s var(--ease);
+}
+.btn-p { background: rgba(34,211,238,0.1); color: var(--cyan); border-color: rgba(34,211,238,0.3); }
+.btn-p:hover { background: rgba(34,211,238,0.18); border-color: var(--cyan); }
+.btn-g { background: transparent; color: var(--t3); border-color: var(--border-dim); }
+.btn-g:hover { color: var(--t1); border-color: var(--border-med); background: var(--bg-2); }
+
+/* BLOG */
+.bg2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1rem; }
+.bc {
+  background: var(--bg-1); border: 1px solid var(--border-dim); border-radius: var(--r-md);
+  padding: 1.5rem; transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s; cursor: pointer;
+}
+.bc:hover { border-color: var(--border-bright); box-shadow: var(--glow-blue); transform: translateY(-2px); }
+.bc .bd { font-family: var(--mono); font-size: 0.62rem; color: var(--t4); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 0.6rem; }
+.bc .bb {
+  display: inline-block; font-family: var(--mono); font-size: 0.58rem; font-weight: 600;
+  padding: 0.15rem 0.5rem; border-radius: 3px; margin-left: 0.5rem;
+}
+.bc h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; line-height: 1.4; }
+.bc p { font-size: 0.82rem; color: var(--t3); line-height: 1.65; margin-bottom: 0.85rem; }
+.bc .bt { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
+/* EXPERIENCE */
+.tl { display: flex; flex-direction: column; gap: 1rem; }
+.ti {
+  background: var(--bg-1); border: 1px solid var(--border-dim); border-radius: var(--r-md);
+  display: grid; grid-template-columns: 190px 1fr; overflow: hidden;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.ti:hover { border-color: var(--border-bright); box-shadow: var(--glow-blue); }
+.tm { padding: 1.5rem; border-right: 1px solid var(--border-dim); display: flex; flex-direction: column; justify-content: center; }
+.td { font-family: var(--mono); font-size: 0.68rem; color: var(--cyan); margin-bottom: 0.4rem; }
+.to { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.15rem; }
+.tloc { font-size: 0.75rem; color: var(--t4); }
+.tb { padding: 1.5rem; }
+.tb h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.65rem; }
+.tb li { font-size: 0.84rem; color: var(--t2); line-height: 1.65; padding-left: 1rem; margin-bottom: 0.3rem; position: relative; }
+.tb li::before { content: '▸'; position: absolute; left: 0; color: var(--cyan); font-family: var(--mono); font-size: 0.7rem; }
+@media (max-width: 700px) {
+  .ti { grid-template-columns: 1fr; }
+  .tm { border-right: none; border-bottom: 1px solid var(--border-dim); }
+}
+
+/* FORMATION */
+.fg { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+.fc {
+  background: var(--bg-1); border: 1px solid var(--border-dim); border-radius: var(--r-md);
+  padding: 1.5rem; position: relative; transition: border-color 0.25s, box-shadow 0.25s;
+}
+.fc:hover { border-color: var(--border-bright); box-shadow: var(--glow-blue); }
+.fc .fy { font-family: var(--mono); font-size: 0.68rem; color: var(--cyan); margin-bottom: 0.45rem; }
+.fc h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+.fc p { font-size: 0.8rem; color: var(--t4); line-height: 1.55; }
+.fc .fb {
+  position: absolute; top: 1rem; right: 1rem;
+  font-family: var(--mono); font-size: 0.58rem; font-weight: 600;
+  padding: 0.15rem 0.45rem; border-radius: 3px;
+}
+
+/* CONTACT */
+.cg { display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.25rem; }
+@media (max-width: 700px) { .cg { grid-template-columns: 1fr; } }
+.cinfo {
+  background: var(--bg-1); border: 1px solid var(--border-dim); border-radius: var(--r-md);
+  padding: 1.75rem; display: flex; flex-direction: column; gap: 1.25rem;
+}
+.cr { display: flex; align-items: flex-start; gap: 0.75rem; }
+.cic {
+  width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+  display: grid; place-items: center; font-size: 0.9rem;
+  background: var(--bg-2); border: 1px solid var(--border-dim);
+}
+.cit .cil { font-family: var(--mono); font-size: 0.6rem; color: var(--t4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.2rem; }
+.cit .civ { font-size: 0.88rem; }
+.cit a { color: var(--cyan); transition: color 0.2s; }
+.cit a:hover { color: var(--blue); }
+.cfw {
+  background: var(--bg-1); border: 1px solid var(--border-dim); border-radius: var(--r-md); padding: 1.75rem;
+}
+.cfw .cft { font-family: var(--mono); font-size: 0.72rem; font-weight: 600; color: var(--t3); margin-bottom: 1.2rem; }
+.cff { margin-bottom: 1rem; }
+.cff label { display: block; font-family: var(--mono); font-size: 0.65rem; color: var(--t4); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 0.35rem; }
+.cff input, .cff textarea {
+  width: 100%; background: var(--bg-2); border: 1px solid var(--border-dim);
+  border-radius: var(--r-sm); padding: 0.65rem 0.85rem;
+  font-family: var(--mono); font-size: 0.8rem; color: var(--t1); transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+}
+.cff input:focus, .cff textarea:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34,211,238,0.08); }
+.cff textarea { resize: vertical; min-height: 100px; }
+.cfs {
+  font-family: var(--mono); font-size: 0.75rem; font-weight: 600;
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  color: var(--bg-0); border: none; border-radius: var(--r-sm);
+  padding: 0.65rem 1.5rem; cursor: pointer; transition: opacity 0.2s, transform 0.2s;
+}
+.cfs:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* FOOTER */
+footer {
+  position: relative; z-index: 2; max-width: 1360px; margin: 0 auto; padding: 2rem 1.5rem;
+  border-top: 1px solid var(--border-dim);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 0.68rem; color: var(--t4); flex-wrap: wrap; gap: 0.5rem;
+}
+footer a { color: var(--cyan); }
+
+/* SECTION COUNTER */
+.wrap { counter-reset: sec; }
+.sh { counter-increment: sec; }
+.sh::before {
+  content: counter(sec, decimal-leading-zero);
+  font-family: var(--mono); font-size: 0.58rem; font-weight: 700;
+  color: var(--cyan); opacity: 0.45; flex-shrink: 0; letter-spacing: 1px;
+}
+
+/* HERO MOTTO */
+.hero-motto {
+  font-family: var(--mono); font-size: 0.7rem; color: var(--t4);
+  letter-spacing: 1.5px; margin-top: 0.25rem;
+}
+.hero-motto span { color: var(--cyan); opacity: 0.7; }
+
+/* FEATURED SKILL */
+.sm-featured {
+  border-color: rgba(52,211,153,0.35);
+  box-shadow: 0 0 0 1px rgba(52,211,153,0.08), inset 0 0 24px rgba(52,211,153,0.03);
+}
+.sm-featured .smh::after {
+  content: 'PRIMARY';
+  font-family: var(--mono); font-size: 0.52rem; font-weight: 700;
+  color: var(--green); background: rgba(52,211,153,0.08);
+  border: 1px solid rgba(52,211,153,0.2); padding: 0.1rem 0.4rem;
+  border-radius: 3px; margin-left: auto;
+}
+
+/* REVEAL */
+.rv { opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+.rv.vis { opacity: 1; transform: translateY(0); }
+.d1{transition-delay:.06s}.d2{transition-delay:.12s}.d3{transition-delay:.18s}
+.d4{transition-delay:.24s}.d5{transition-delay:.3s}.d6{transition-delay:.36s}
+
+/* I18N */
+[data-lang="fr"] [data-en] { display: none !important; }
+[data-lang="en"] [data-fr] { display: none !important; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-0); }
+::-webkit-scrollbar-thumb { background: var(--border-dim); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+
+<nav class="nav" id="nb">
+  <div class="nav-inner">
+    <a href="#accueil" class="nav-logo"><span class="pr">~/</span>ibrahim.mht<span class="cur"></span></a>
+    <button class="nav-mob" id="nt" aria-label="Menu"><span></span><span></span><span></span></button>
+    <div class="nav-links" id="nl">
+      <a href="#accueil" class="active" data-fr>Accueil</a><a href="#accueil" class="active" data-en>Home</a>
+      <a href="#about" data-fr>À propos</a><a href="#about" data-en>About</a>
+      <a href="#skills" data-fr>Compétences</a><a href="#skills" data-en>Skills</a>
+      <a href="#projects" data-fr>Projets</a><a href="#projects" data-en>Projects</a>
+<a href="#xp" data-fr>Expérience</a><a href="#xp" data-en>Experience</a>
+      <a href="#ambitions" data-fr>Ambitions</a><a href="#ambitions" data-en>Goals</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-right">
+      <div class="status-badge"><span class="dot"></span><span data-fr>Disponible - Alternance 2026</span><span data-en>Available - Apprenticeship 2026</span></div>
+      <button class="lang-toggle" id="lt"><span data-fr>EN</span><span data-en>FR</span> ⇆</button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<!-- HERO -->
+<section class="hero" id="accueil">
+  <div class="hero-main rv">
+    <div class="hero-upper">
+      <div class="hero-photo">
+        <img src="ma%20photo.jpg" alt="Ibrahim Mahamat">
+      </div>
+      <div class="hero-tb">
+        <div class="hero-term"><span class="g">$</span> whoami <span style="color:var(--t4)">→</span> ibrahim.mahamat <span style="color:var(--t4)">// ar · fr · en</span></div>
+        <h1 class="hero-name">Ibrahim <span>Mahamat</span></h1>
+        <div class="hero-motto" data-fr><span>// </span>Structurer · Protéger · Analyser</div>
+        <div class="hero-motto" data-en><span>// </span>Structure · Secure · Analyse</div>
+        <p class="hero-title" data-fr>Sécurité des données · Bases de données · Cybersécurité</p>
+        <p class="hero-title" data-en>Data Security · Database Management · Cybersecurity</p>
+      </div>
+    </div>
+    <p class="hero-desc" data-fr>Étudiant en BUT2 Informatique parcours Cybersécurité à l'IUT d'Orsay - Université Paris-Saclay. Mon double profil <strong>bases de données + cybersécurité</strong> me permet d'aborder la donnée sous deux angles : sa structuration (modélisation, SQL, PL/SQL) et sa protection (audit, contrôle d'accès, intégrité).<br><br>En recherche d'un <strong>contrat d'apprentissage de 12 mois</strong> (3j/2j) pour le BUT3 parcours Base de données (AGED).</p>
+    <p class="hero-desc" data-en>Computer Science student (2nd year) specializing in Cybersecurity at IUT d'Orsay - Université Paris-Saclay. My dual profile in <strong>databases + cybersecurity</strong> lets me approach data from two angles: structuring it (modeling, SQL, PL/SQL) and securing it (auditing, access control, integrity).<br><br>Looking for a <strong>12-month apprenticeship</strong> (3d/2d) for my 3rd year in Database Management (AGED).</p>
+    <div class="hero-tags">
+      <span class="tag tag-cy">◈ Data Security</span><span class="tag tag-gn">⛁ Databases</span>
+      <span class="tag tag-vi">◇ Modeling</span><span class="tag tag-rd">⛨ Cybersecurity</span>
+      <span class="tag tag-am">△ Data Analysis</span>
+    </div>
+  </div>
+  <div class="hero-side">
+    <div class="card rv d1">
+      <div class="cl" data-fr>Formation</div><div class="cl" data-en>Education</div>
+      <div class="cb">BUT 2</div>
+      <div class="cs" data-fr>Informatique - Cybersécurité</div><div class="cs" data-en>Computer Science - Cybersecurity</div>
+    </div>
+    <div class="card rv d2">
+      <div class="cl" data-fr>Projets livrés</div><div class="cl" data-en>Projects delivered</div>
+      <div class="cb">4</div>
+      <div class="cs" data-fr>Projets clés sélectionnés</div><div class="cs" data-en>Key selected projects</div>
+    </div>
+    <div class="card rv d3">
+      <div class="cl" data-fr>Accès rapide</div><div class="cl" data-en>Quick access</div>
+      <div class="ql">
+        <a href="mailto:mahamat421@gmail.com"><span class="qi">✉</span> mahamat421@gmail.com</a>
+        <a href="https://www.linkedin.com/in/ibrahim-mahamat" target="_blank"><span class="qi">⊞</span> LinkedIn</a>
+        <a href="https://github.com/ibrahim421" target="_blank"><span class="qi">◧</span> GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sh rv"><div class="si" style="background:rgba(34,211,238,0.08);color:var(--cyan);">⊡</div><h2 data-fr>À propos</h2><h2 data-en>About</h2><div class="sl"></div><span class="st">SYS.ABOUT</span></div>
+  <div class="ag">
+    <div class="ac rv d1">
+      <h3 data-fr>// Mon parcours</h3><h3 data-en>// My journey</h3>
+      <p data-fr>Après un Bac général (Maths/Physique-Chimie) au Lycée Français de Djeddah en Arabie Saoudite, j'ai intégré le BUT Informatique à l'IUT d'Orsay. En 2ème année parcours Cybersécurité, je me prépare à une 3ème année en alternance spécialisée en Base de données (AGED).</p>
+      <p data-en>After a French Baccalauréat (Maths/Physics-Chemistry) at the French School of Jeddah, Saudi Arabia, I joined the Computer Science program at IUT d'Orsay. Currently in my 2nd year Cybersecurity track, preparing for a 3rd-year apprenticeship in Database Management (AGED).</p>
+    </div>
+    <div class="ac rv d2">
+      <h3 data-fr>// Mon positionnement</h3><h3 data-en>// My positioning</h3>
+      <p data-fr>Mon double profil bases de données + cybersécurité me place sur un angle précis : la <strong>sécurité des données</strong>. Je sais structurer une base (modélisation, SQL, PL/SQL), en contrôler les accès et en auditer les failles — deux faces d'un même métier que peu de profils BUT3 couvrent ensemble.</p>
+      <p data-en>My dual background in databases + cybersecurity positions me on a precise angle: <strong>data security</strong>. I can structure a database (modeling, SQL, PL/SQL), control access rights and audit its vulnerabilities — two sides of the same job that few BUT3 profiles cover together.</p>
+    </div>
+    <div class="ac ac-full rv d3">
+      <h3 data-fr>// Savoir-être</h3><h3 data-en>// Soft skills</h3>
+      <p data-fr>Organisé, patient et communicant, je m'intègre facilement aux équipes. Mon expérience internationale (Arabie Saoudite → France) m'a donné une ouverture culturelle. Autonome et curieux, j'ai mené 3 projets en parallèle tout en me formant continuellement.</p>
+      <p data-en>Organized, patient, and a strong communicator. My international background (Saudi Arabia → France) gave me cultural adaptability. Self-driven and curious, I've managed 3 parallel projects while continuously upskilling.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sh rv"><div class="si" style="background:rgba(59,130,246,0.08);color:var(--blue);">⚙</div><h2 data-fr>Compétences</h2><h2 data-en>Skills</h2><div class="sl"></div><span class="st">SYS.SKILLS</span></div>
+  <div class="sg">
+    <div class="sm rv d1">
+      <div class="smh"><div class="smi" style="background:rgba(248,113,113,0.08);color:var(--red);">⛨</div><div class="smt" data-fr>Cybersécurité</div><div class="smt" data-en>Cybersecurity</div></div>
+      <div class="si2"><span class="sk">Nmap</span><span class="sk">Netstat</span><span class="sk">SSH</span><span class="sk">FTP</span><span class="sk">Privilege Escalation</span><span class="sk">Lateral Movement</span><span class="sk">Brute-Force</span><span class="sk">Firewall</span><span class="sk">VPN</span></div>
+      <div class="sb">
+        <div class="sbr"><span class="sbl" data-fr>Audit réseau</span><span class="sbl" data-en>Network audit</span><span class="slv slv-p" data-fr>Pratique</span><span class="slv slv-p" data-en>Practised</span></div>
+        <div class="sbr"><span class="sbl" data-fr>Exploitation</span><span class="sbl" data-en>Exploitation</span><span class="slv slv-p" data-fr>Pratique</span><span class="slv slv-p" data-en>Practised</span></div>
+      </div>
+    </div>
+    <div class="sm sm-featured rv d2">
+      <div class="smh"><div class="smi" style="background:rgba(52,211,153,0.08);color:var(--green);">⛁</div><div class="smt" data-fr>Bases de données</div><div class="smt" data-en>Databases</div></div>
+      <div class="si2"><span class="sk">MySQL</span><span class="sk">MariaDB</span><span class="sk">Oracle</span><span class="sk">PL/SQL</span><span class="sk">Triggers</span><span class="sk">Procédures stockées</span><span class="sk">MCD / MLD</span><span class="sk">SQL avancé</span></div>
+      <div class="sb">
+        <div class="sbr"><span class="sbl">SQL / PL/SQL</span><span class="slv slv-m" data-fr>Maîtrise</span><span class="slv slv-m" data-en>Proficient</span></div>
+        <div class="sbr"><span class="sbl" data-fr>Modélisation</span><span class="sbl" data-en>Modeling</span><span class="slv slv-m" data-fr>Maîtrise</span><span class="slv slv-m" data-en>Proficient</span></div>
+      </div>
+    </div>
+    <div class="sm rv d3">
+      <div class="smh"><div class="smi" style="background:rgba(167,139,250,0.08);color:var(--violet);">⟨⟩</div><div class="smt" data-fr>Programmation</div><div class="smt" data-en>Programming</div></div>
+      <div class="si2"><span class="sk">Java</span><span class="sk">Python</span><span class="sk">C++</span><span class="sk">PHP</span><span class="sk">POO</span><span class="sk">API REST</span><span class="sk">MVC</span></div>
+      <div class="sb">
+        <div class="sbr"><span class="sbl">Java</span><span class="slv slv-p" data-fr>Pratique</span><span class="slv slv-p" data-en>Practised</span></div>
+        <div class="sbr"><span class="sbl">Python</span><span class="slv slv-n" data-fr>Notions</span><span class="slv slv-n" data-en>Basics</span></div>
+      </div>
+    </div>
+    <div class="sm rv d4">
+      <div class="smh"><div class="smi" style="background:rgba(34,211,238,0.08);color:var(--cyan);">◈</div><div class="smt">Web</div></div>
+      <div class="si2"><span class="sk">HTML5</span><span class="sk">CSS3</span><span class="sk">JavaScript</span><span class="sk">PHP</span><span class="sk">API REST</span><span class="sk">MVC</span></div>
+    </div>
+    <div class="sm rv d5">
+      <div class="smh"><div class="smi" style="background:rgba(59,130,246,0.08);color:var(--blue);">⊞</div><div class="smt" data-fr>Réseaux &amp; Infra</div><div class="smt" data-en>Networks &amp; Infra</div></div>
+      <div class="si2"><span class="sk">TCP/IP</span><span class="sk">DHCP</span><span class="sk">DNS</span><span class="sk">VLAN</span><span class="sk">Routage</span><span class="sk">NAT</span><span class="sk">IPv4/IPv6</span><span class="sk">Apache</span><span class="sk">Unbound</span></div>
+    </div>
+    <div class="sm rv d6">
+      <div class="smh"><div class="smi" style="background:rgba(251,191,36,0.08);color:var(--amber);">⊡</div><div class="smt" data-fr>Outils &amp; Méthodes</div><div class="smt" data-en>Tools &amp; Methods</div></div>
+      <div class="si2"><span class="sk">Linux</span><span class="sk">Git / GitLab</span><span class="sk">UML</span><span class="sk">Agile / Scrum</span></div>
+    </div>
+    <div class="sm rv d6">
+      <div class="smh">
+        <div class="smi" style="background:rgba(34,211,238,0.08);color:var(--cyan);">⊕</div>
+        <div class="smt" data-fr>Langues</div>
+        <div class="smt" data-en>Languages</div>
+      </div>
+      <div class="si2">
+        <span class="sk" data-fr>Arabe - C2</span><span class="sk" data-en>Arabic - C2</span>
+        <span class="sk" data-fr>Français - C1</span><span class="sk" data-en>French - C1</span>
+        <span class="sk" data-fr>Anglais - B2</span><span class="sk" data-en>English - B2</span>
+      </div>
+      <div class="sb">
+        <div class="sbr">
+          <span class="sbl" data-fr>Arabe</span><span class="sbl" data-en>Arabic</span>
+          <div class="sbt"><div class="sbf" data-w="100" style="background:var(--cyan);"></div></div>
+        </div>
+        <div class="sbr">
+          <span class="sbl" data-fr>Français</span><span class="sbl" data-en>French</span>
+          <div class="sbt"><div class="sbf" data-w="85" style="background:var(--cyan);"></div></div>
+        </div>
+        <div class="sbr">
+          <span class="sbl" data-fr>Anglais</span><span class="sbl" data-en>English</span>
+          <div class="sbt"><div class="sbf" data-w="65" style="background:var(--cyan);"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sh rv"><div class="si" style="background:rgba(34,211,238,0.08);color:var(--cyan);">◧</div><h2 data-fr>Projets</h2><h2 data-en>Projects</h2><div class="sl"></div><span class="st">MODULES.PROJECTS</span></div>
+  <div class="pg2">
+
+    <div class="pc rv d1">
+      <div class="pt"><span class="pid">PRJ-001 · BUT2</span><span class="pst" data-fr>● Livré</span><span class="pst" data-en>● Done</span></div>
+      <div class="pimg"><div class="pph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div></div>
+      <div class="pb">
+        <h3 data-fr>Plateforme Full-Stack de gestion pédagogique</h3><h3 data-en>Full-Stack Academic Management Platform</h3>
+        <div class="psr">
+          <div class="psri"><span class="psrl" data-fr>Situation</span><span class="psrl" data-en>Situation</span><span data-fr>Projet BUT2 : les responsables de filières géraient manuellement les groupes, notes et imports étudiants - processus lent et source d'erreurs.</span><span data-en>BUT2 group project: department heads manually managed groups, grades and imports - slow and error-prone.</span></div>
+          <div class="psri"><span class="psrl" data-fr>Tâche</span><span class="psrl" data-en>Task</span><span data-fr>En tant que développeur back-end et responsable BDD, concevoir le modèle de données, l'API REST et l'algorithme de répartition automatique.</span><span data-en>As back-end developer and DB lead, design the data model, REST API and automatic group assignment algorithm.</span></div>
+          <div class="psri"><span class="psrl">Action</span><span data-fr>Modélisation UML/MCD, API REST Java (JDBC, architecture MVC) + PHP/MySQL via phpMyAdmin, algorithme glouton multi-contraintes, imports CSV, pilotage agile sous IntelliJ/Eclipse.</span><span data-en>UML/CDM modeling, REST API in Java (JDBC, MVC) + PHP/MySQL via phpMyAdmin, greedy algorithm, CSV imports, agile management - IntelliJ/Eclipse.</span></div>
+          <div class="psri"><span class="psrl" data-fr>Résultat</span><span class="psrl" data-en>Result</span><span data-fr>Plateforme multi-rôles déployée ; algorithme glouton retenu après comparaison avec la force brute (trop lente), répartissant 200+ étudiants en groupes équilibrés. Validée par les enseignants.</span><span data-en>Multi-role platform deployed; greedy algorithm selected after benchmarking against brute-force (too slow), assigning 200+ students into balanced groups. Validated by professors.</span></div>
+        </div>
+        <div class="pct"><span class="tag tag-bl">Java</span><span class="tag tag-bl">JDBC</span><span class="tag tag-cy">PHP</span><span class="tag tag-gn">MySQL</span><span class="tag tag-gn">phpMyAdmin</span><span class="tag tag-am">API REST</span><span class="tag tag-vi">UML</span></div>
+        <div class="pa"><a href="#" onclick="openDemo();return false;" class="btn btn-p">⊞ Demo</a><a href="https://github.com/ibrahim421" target="_blank" class="btn btn-g">◧ GitHub</a></div>
+      </div>
+    </div>
+
+    <div class="pc rv d2">
+      <div class="pt"><span class="pid">PRJ-002 · BUT2</span><span class="pst" data-fr>● Livré</span><span class="pst" data-en>● Done</span></div>
+      <div class="pimg"><img src="Infrastructure%20r%C3%A9seau%20s%C3%A9curis%C3%A9e.jpg" alt="Infrastructure réseau sécurisée"></div>
+      <div class="pb">
+        <h3 data-fr>Infrastructure réseau sécurisée</h3><h3 data-en>Secure Network Infrastructure</h3>
+        <div class="psr">
+          <div class="psri"><span class="psrl" data-fr>Situation</span><span class="psrl" data-en>Situation</span><span data-fr>Projet BUT2 : simuler le réseau d'une organisation avec 3 équipes (Porthos, Aramis, Athos) et un centre administratif (Richelieu), avec besoins d'isolation et de services.</span><span data-en>BUT2 project: simulate a corporate network with 3 teams (Porthos, Aramis, Athos) and an admin center (Richelieu), requiring isolation and services.</span></div>
+          <div class="psri"><span class="psrl" data-fr>Tâche</span><span class="psrl" data-en>Task</span><span data-fr>Responsable de la configuration des VLANs, du routage statique et du déploiement du serveur DNS local (Unbound).</span><span data-en>Responsible for VLAN configuration, static routing and deploying the local DNS server (Unbound).</span></div>
+          <div class="psri"><span class="psrl">Action</span><span data-fr>Planification IP, VLANs par équipe, routage inter-VLAN, déploiement Unbound avec redirections conditionnelles, documentation complète de la topologie.</span><span data-en>IP planning, VLANs per team, inter-VLAN routing, Unbound with conditional forwarding, full topology documentation.</span></div>
+          <div class="psri"><span class="psrl" data-fr>Résultat</span><span class="psrl" data-en>Result</span><span data-fr>Réseau entièrement fonctionnel : communication inter-sous-réseaux validée, DNS résolvant les domaines personnalisés, DHCP/HTTP opérationnels.</span><span data-en>Fully functional network: validated inter-subnet communication, DNS resolving custom domains, DHCP/HTTP running on each segment.</span></div>
+        </div>
+        <div class="pct"><span class="tag tag-bl">Linux</span><span class="tag tag-cy">TCP/IP</span><span class="tag tag-gn">VLAN</span><span class="tag tag-am">DNS</span><span class="tag tag-vi">Apache</span></div>
+        <div class="pa"><a href="https://github.com/ibrahim421" target="_blank" class="btn btn-g">◧ GitHub</a></div>
+      </div>
+    </div>
+
+    <div class="pc rv d3">
+      <div class="pt"><span class="pid">PRJ-003 · BUT2</span><span class="pst" data-fr>● Livré</span><span class="pst" data-en>● Done</span></div>
+      <div class="pimg"><div class="pph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div></div>
+      <div class="pb">
+        <h3 data-fr>Audit de sécurité &amp; Pentest</h3><h3 data-en>Security Audit &amp; Pentest</h3>
+        <div class="psr">
+          <div class="psri"><span class="psrl" data-fr>Situation</span><span class="psrl" data-en>Situation</span><span data-fr>Série de TPs sur 7 semaines en BUT2 Cybersécurité : un enseignant avait déployé des machines virtuelles volontairement mal configurées à auditer.</span><span data-en>7-week lab series in BUT2 Cybersecurity: a professor deployed intentionally misconfigured VMs to audit.</span></div>
+          <div class="psri"><span class="psrl" data-fr>Tâche</span><span class="psrl" data-en>Task</span><span data-fr>Individuellement, identifier les vulnérabilités, les exploiter progressivement et rédiger un rapport d'audit à chaque étape.</span><span data-en>Individually identify vulnerabilities, progressively exploit them, and write an audit report at each stage.</span></div>
+          <div class="psri"><span class="psrl">Action</span><span data-fr>Reconnaissance Nmap, FTP anonyme, brute-force SSH, escalade de privilèges sudo/SUID, mouvement latéral. Rapports détaillés à chaque étape.</span><span data-en>Nmap recon, anonymous FTP, SSH brute-force, sudo/SUID privilege escalation, lateral movement. Detailed reports at each stage.</span></div>
+          <div class="psri"><span class="psrl" data-fr>Résultat</span><span class="psrl" data-en>Result</span><span data-fr>Accès root obtenu sur les 3 machines cibles dans un environnement compétitif (30 élèves) ; accès sécurisé post-exploitation (pare-feu + changement de mdp). 7 rapports d'audit produits.</span><span data-en>Root access obtained on all 3 target machines in a competitive environment (30 students); access secured post-exploitation (firewall + password change). 7 audit reports produced.</span></div>
+        </div>
+        <div class="pct"><span class="tag tag-rd">Nmap</span><span class="tag tag-cy">SSH</span><span class="tag tag-gn">FTP</span><span class="tag tag-am">Linux</span></div>
+        <div class="pa"><a href="https://github.com/ibrahim421" target="_blank" class="btn btn-g">◧ GitHub</a></div>
+      </div>
+    </div>
+
+    <div class="pc rv d4">
+      <div class="pt"><span class="pid">PRJ-004 · BUT1-2</span><span class="pst" data-fr>● Livré</span><span class="pst" data-en>● Done</span></div>
+      <div class="pimg"><div class="pph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 17h7M14 14h3v7h-3"/></svg></div></div>
+      <div class="pb">
+        <h3 data-fr>Dashboard data - Jeux Olympiques</h3><h3 data-en>Data Dashboard - Olympic Games</h3>
+        <div class="psr">
+          <div class="psri"><span class="psrl" data-fr>Situation</span><span class="psrl" data-en>Situation</span><span data-fr>Projet BUT1-2 : exploiter une base Oracle contenant les résultats historiques des JO pour en tirer des analyses statistiques avancées.</span><span data-en>BUT1-2 project: leverage an Oracle DB with historical Olympic results for advanced statistical analysis.</span></div>
+          <div class="psri"><span class="psrl" data-fr>Tâche</span><span class="psrl" data-en>Task</span><span data-fr>Responsable de la conception des vues dynamiques, des fonctions stockées PL/SQL et de l'analyse statistique.</span><span data-en>Responsible for designing dynamic views, PL/SQL stored functions and statistical analysis.</span></div>
+          <div class="psri"><span class="psrl">Action</span><span data-fr>Création de 2 rôles (AnalyseJO/GestionJO), fonctions JSON, système de journalisation par triggers, analyses multi-dimensionnelles sur 120 ans de données.</span><span data-en>Created 2 roles (AnalyseJO/GestionJO), JSON functions, trigger-based audit trail, multi-dimensional analyses over 120 years of data.</span></div>
+          <div class="psri"><span class="psrl" data-fr>Résultat</span><span class="psrl" data-en>Result</span><span data-fr>10+ vues et fonctions, analyses complètes (classements, féminisation, démographie, top 3 mondial), journalisation automatique validée.</span><span data-en>10+ views and functions, complete analyses (rankings, gender, demographics, top 3 trends), validated automatic audit trail.</span></div>
+        </div>
+        <div class="pct"><span class="tag tag-bl">Oracle SQL</span><span class="tag tag-bl">SQL Developer</span><span class="tag tag-cy">PL/SQL</span><span class="tag tag-gn">Triggers</span><span class="tag tag-vi">Procédures stockées</span><span class="tag tag-am">Stats</span></div>
+        <div class="pa"><a href="https://github.com/ibrahim421" target="_blank" class="btn btn-g">◧ GitHub</a></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- EXPERIENCE -->
+<section id="xp">
+  <div class="sh rv"><div class="si" style="background:rgba(52,211,153,0.08);color:var(--green);">⧫</div><h2 data-fr>Expériences</h2><h2 data-en>Experience</h2><div class="sl"></div><span class="st">LOG.XP</span></div>
+  <div class="tl">
+    <div class="ti rv d1">
+      <div class="tm">
+        <div class="td" data-fr>ÉTÉ 2024 → PRÉSENT</div><div class="td" data-en>SUMMER 2024 → PRESENT</div>
+        <div class="to">RATP</div><div class="tloc">Denfert-Rochereau, Massy</div>
+      </div>
+      <div class="tb">
+        <h3 data-fr>Agent d'accueil en gare · Intérimaire</h3><h3 data-en>Station Reception Agent · Temp</h3>
+        <div class="psr">
+          <div class="psri"><span class="psrl" data-fr>Situation</span><span class="psrl" data-en>Situation</span><span data-fr>Missions ponctuelles en gares de Denfert-Rochereau et Massy, environnement à fort flux (200+ usagers/jour).</span><span data-en>Recurring assignments at Denfert-Rochereau and Massy stations, high-traffic environment (200+ users/day).</span></div>
+          <div class="psri"><span class="psrl" data-fr>Tâche</span><span class="psrl" data-en>Task</span><span data-fr>Assurer l'accueil, l'orientation des voyageurs et la gestion de situations d'urgence, en coordination avec les équipes d'exploitation.</span><span data-en>Ensure passenger welcome, wayfinding and emergency management, coordinating with operations teams.</span></div>
+          <div class="psri"><span class="psrl">Action</span><span data-fr>Accueil et orientation multilingue, résolution de situations complexes (malaises, personnes en situation de handicap), collaboration quotidienne avec les équipes techniques.</span><span data-en>Multilingual welcoming and directing, resolving complex situations (medical emergencies, disability assistance), daily collaboration with technical teams.</span></div>
+          <div class="psri"><span class="psrl" data-fr>Résultat</span><span class="psrl" data-en>Result</span><span data-fr>Reconnu pour ma réactivité et mon calme, rappelé régulièrement pour des missions depuis plus d'un an.</span><span data-en>Recognized for responsiveness and composure, regularly called back for assignments for over a year.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ti rv d2">
+      <div class="tm">
+        <div class="td" data-fr>AOÛT 2025</div><div class="td" data-en>AUGUST 2025</div>
+        <div class="to">RPA St Laurent</div><div class="tloc">Orsay</div>
+      </div>
+      <div class="tb">
+        <h3 data-fr>Agent administratif</h3><h3 data-en>Administrative Agent</h3>
+        <ul>
+          <li data-fr>Gestion de bases de données administratives (serveurs, classement, mise à jour)</li><li data-en>Managing administrative databases (servers, filing, updates)</li>
+          <li data-fr>Support technique lors d'interventions de prestataires externes</li><li data-en>Technical support during external contractor interventions</li>
+          <li data-fr>Communication multicanale (physique, téléphonique, mail)</li><li data-en>Multi-channel communication (in-person, phone, email)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ti rv d3">
+      <div class="tm">
+        <div class="td" data-fr>MAI – AOÛT 2023</div><div class="td" data-en>MAY – AUG 2023</div>
+        <div class="to">Maître CoQ</div><div class="tloc" data-fr>Saint-Fulgent, Pays de la Loire</div><div class="tloc" data-en>Saint-Fulgent, Loire region</div>
+      </div>
+      <div class="tb">
+        <h3 data-fr>Préparateur de commande · Intérimaire · 4 mois</h3><h3 data-en>Order Picker · Temp · 4 months</h3>
+        <ul>
+          <li data-fr>Préparation et expédition de commandes dans un entrepôt agroalimentaire</li><li data-en>Order preparation and dispatch in a food industry warehouse</li>
+          <li data-fr>Gestion des stocks et optimisation des temps de préparation via un système informatisé</li><li data-en>Stock management and preparation time optimization using a computerized system</li>
+          <li data-fr>Respect strict des procédures et normes qualité</li><li data-en>Strict adherence to procedures and quality standards</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ti rv d4">
+      <div class="tm">
+        <div class="td" data-fr>NOV 2022 – MARS 2023</div><div class="td" data-en>NOV 2022 – MAR 2023</div>
+        <div class="to">KFC France</div><div class="tloc">Les Ulis (91)</div>
+      </div>
+      <div class="tb">
+        <h3 data-fr>Employé restauration · CDI temps partiel · 5 mois</h3><h3 data-en>Restaurant Employee · Part-time · 5 months</h3>
+        <ul>
+          <li data-fr>Gestion des commandes et suivi des stocks via un système informatisé</li><li data-en>Order management and stock tracking via computerized system</li>
+          <li data-fr>Respect strict des procédures et des normes qualité en restauration rapide</li><li data-en>Strict compliance with fast-food procedures and quality standards</li>
+          <li data-fr>Travail en équipe dans un environnement dynamique à fort flux</li><li data-en>Teamwork in a fast-paced, high-traffic environment</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMATION -->
+<section id="formation">
+  <div class="sh rv"><div class="si" style="background:rgba(251,191,36,0.08);color:var(--amber);">⎔</div><h2>Formation</h2><div class="sl"></div><span class="st">SYS.EDU</span></div>
+  <div class="fg">
+    <div class="fc rv d1">
+      <span class="fb" style="color:var(--amber);background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);" data-fr>● À venir</span><span class="fb" style="color:var(--amber);background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.2);" data-en>● Upcoming</span>
+      <div class="fy" data-fr>RENTRÉE 2026</div><div class="fy" data-en>FALL 2026</div>
+      <h3 data-fr>BUT3 Informatique - Parcours C</h3><h3 data-en>BSc CS - Track C</h3>
+      <p data-fr>Base de données AGED · En apprentissage<br>IUT d'Orsay - Université Paris-Saclay</p><p data-en>Database Management AGED · Apprenticeship<br>IUT d'Orsay - Université Paris-Saclay</p>
+    </div>
+    <div class="fc rv d2">
+      <span class="fb" style="color:var(--green);background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);" data-fr>● En cours</span><span class="fb" style="color:var(--green);background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);" data-en>● Current</span>
+      <div class="fy">2023 - 2025</div>
+      <h3 data-fr>BUT2 Informatique - Parcours B</h3><h3 data-en>DUT CS - Track B</h3>
+      <p data-fr>Cybersécurité<br>IUT d'Orsay - Université Paris-Saclay</p><p data-en>Cybersecurity<br>IUT d'Orsay - Université Paris-Saclay</p>
+    </div>
+    <div class="fc rv d3">
+      <div class="fy">2022</div>
+      <h3 data-fr>Baccalauréat Général</h3><h3 data-en>French Baccalauréat</h3>
+      <p data-fr>Maths / Physique-Chimie<br>Lycée Français de Djeddah - Arabie Saoudite</p><p data-en>Maths / Physics-Chemistry<br>French School of Jeddah - Saudi Arabia</p>
+    </div>
+  </div>
+</section>
+
+<!-- AMBITIONS -->
+<section id="ambitions">
+  <div class="sh rv">
+    <div class="si" style="background:rgba(59,130,246,0.08);color:var(--blue);">◎</div>
+    <h2 data-fr>Projet professionnel</h2>
+    <h2 data-en>Career goals</h2>
+    <div class="sl"></div>
+    <span class="st">SYS.ROADMAP</span>
+  </div>
+  <div class="fg">
+    <div class="fc rv d1">
+      <span class="fb" style="color:var(--cyan);background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.2);">2026</span>
+      <div class="fy" data-fr>COURT TERME</div>
+      <div class="fy" data-en>SHORT TERM</div>
+      <h3 data-fr>Alternance BUT3 - Base de données (AGED)</h3>
+      <h3 data-en>BUT3 Apprenticeship - Database Management</h3>
+      <p data-fr>Intégrer une entreprise en contrat d'apprentissage de 12 mois (3j/2j) pour ma 3ème année de BUT Informatique. Je cherche un poste où je pourrai mettre en pratique mes compétences en SQL, modélisation et développement back-end.</p>
+      <p data-en>Join a company on a 12-month apprenticeship (3d/2d) for my 3rd year. Looking for a role where I can apply my SQL, modeling and back-end development skills in a real environment.</p>
+    </div>
+    <div class="fc rv d2">
+      <span class="fb" style="color:var(--blue);background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);">2027-28</span>
+      <div class="fy" data-fr>MOYEN TERME</div>
+      <div class="fy" data-en>MEDIUM TERM</div>
+      <h3 data-fr>Premier emploi ou poursuite d'études</h3>
+      <h3 data-en>First job or further studies</h3>
+      <p data-fr>Après le BUT, soit intégrer le monde pro en tant que développeur BDD / data analyst junior, soit poursuivre en école d'ingénieur ou master spécialisé en data engineering ou cybersécurité.</p>
+      <p data-en>After graduating, either enter the workforce as a junior DB developer / data analyst, or pursue an engineering degree in data engineering or cybersecurity.</p>
+    </div>
+    <div class="fc rv d3">
+      <span class="fb" style="color:var(--violet);background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);">2030+</span>
+      <div class="fy" data-fr>LONG TERME</div>
+      <div class="fy" data-en>LONG TERM</div>
+      <h3 data-fr>Expert data &amp; sécurité</h3>
+      <h3 data-en>Data &amp; security expert</h3>
+      <p data-fr>Viser un poste d'ingénieur ou consultant à l'intersection des données et de la sécurité : architecte données, data engineer cybersécurité, ou consultant en sécurité des SI.</p>
+      <p data-en>Aim for an engineer or consultant role at the intersection of data and security: data architect, cyber-aware data engineer, or IS security consultant.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOBBIES -->
+<section id="hobbies">
+  <div class="sh rv">
+    <div class="si" style="background:rgba(251,191,36,0.08);color:var(--amber);">⊛</div>
+    <h2 data-fr>Centres d'intérêt</h2>
+    <h2 data-en>Interests</h2>
+    <div class="sl"></div>
+    <span class="st">SYS.HOBBIES</span>
+  </div>
+  <div class="ag">
+    <div class="ac rv d1">
+      <h3 data-fr>// Sport &amp; bien-être</h3>
+      <h3 data-en>// Sports &amp; wellbeing</h3>
+      <p data-fr>Football (pratiqué depuis l'enfance, matchs réguliers entre amis), course à pied (entraînement hebdomadaire), méditation (pratique quotidienne de pleine conscience pour la concentration et la gestion du stress).</p>
+      <p data-en>Football (played since childhood, regular friendly matches), running (weekly training), meditation (daily mindfulness practice for focus and stress management).</p>
+    </div>
+    <div class="ac rv d2">
+      <h3 data-fr>// Écriture &amp; créativité</h3>
+      <h3 data-en>// Writing &amp; creativity</h3>
+      <p data-fr>Poésie (écriture régulière, exploration de thèmes personnels et philosophiques), écriture créative comme moyen d'expression et de structuration de la pensée.</p>
+      <p data-en>Poetry (regular writing, exploring personal and philosophical themes), creative writing as a means of expression and thought structuring.</p>
+    </div>
+    <div class="ac rv d3">
+      <h3 data-fr>// Cuisine du monde</h3>
+      <h3 data-en>// World cuisine</h3>
+      <p data-fr>Passionné de cuisine, notamment de plats du monde. J'aime découvrir de nouvelles recettes et partager des repas - un moyen de créativité et de convivialité.</p>
+      <p data-en>Passionate about cooking, especially world cuisine. I enjoy discovering new recipes and sharing meals - a way of creativity and togetherness.</p>
+    </div>
+    <div class="ac rv d4">
+      <h3 data-fr>// Veille technologique</h3>
+      <h3 data-en>// Tech watch</h3>
+      <p data-fr>Curieux des nouvelles technologies, je me forme en autodidacte : cybersécurité (CTF, writeups), data science, outils open source. Participation ponctuelle à des projets collaboratifs.</p>
+      <p data-en>Curious about new technologies, I self-learn on various topics: cybersecurity (CTF, writeups), data science, open-source tools. Occasional participation in collaborative projects.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sh rv"><div class="si" style="background:rgba(167,139,250,0.08);color:var(--violet);">◈</div><h2>Contact</h2><div class="sl"></div><span class="st">NET.CONTACT</span></div>
+  <div class="cg">
+    <div class="cinfo rv d1">
+      <div class="cr"><div class="cic" style="color:var(--cyan);">✉</div><div class="cit"><div class="cil">Email</div><div class="civ"><a href="mailto:mahamat421@gmail.com">mahamat421@gmail.com</a></div></div></div>
+      <div class="cr"><div class="cic" style="color:var(--green);">☎</div><div class="cit"><div class="cil" data-fr>Téléphone</div><div class="cil" data-en>Phone</div><div class="civ">07 53 32 34 89</div></div></div>
+      <div class="cr"><div class="cic" style="color:var(--blue);">⊞</div><div class="cit"><div class="cil">LinkedIn</div><div class="civ"><a href="https://www.linkedin.com/in/ibrahim-mahamat" target="_blank">linkedin.com/in/ibrahim-mahamat</a></div></div></div>
+      <div class="cr"><div class="cic" style="color:var(--violet);">◧</div><div class="cit"><div class="cil">GitHub</div><div class="civ"><a href="https://github.com/ibrahim421" target="_blank">github.com/ibrahim421</a></div></div></div>
+      <div class="cr"><div class="cic" style="color:var(--amber);">⊡</div><div class="cit"><div class="cil" data-fr>Localisation</div><div class="cil" data-en>Location</div><div class="civ">Orsay (91), France</div></div></div>
+    </div>
+    <div class="cfw rv d2">
+      <div class="cft" data-fr>// Envoyez-moi un message</div><div class="cft" data-en>// Send me a message</div>
+      <form id="cf" onsubmit="hs(event)">
+        <div class="cff"><label for="cn"><span data-fr>Nom</span><span data-en>Name</span></label><input type="text" id="cn" required></div>
+        <div class="cff"><label for="ce">Email</label><input type="email" id="ce" required></div>
+        <div class="cff"><label for="cm">Message</label><textarea id="cm" required></textarea></div>
+        <button type="submit" class="cfs" data-fr>Envoyer ▸</button><button type="submit" class="cfs" data-en>Send ▸</button>
+      </form>
+      <div id="cfb" style="margin-top:0.75rem;font-family:var(--mono);font-size:0.75rem;color:var(--green);display:none;"></div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <span>© 2026 Ibrahim Mahamat</span>
+  <span><span data-fr>Construit avec</span><span data-en>Built with</span> HTML · CSS · JS</span>
+</footer>
+
+<script>
+// Reveal on scroll
+const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:.06,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+// Skill bars
+const bo=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.querySelectorAll('.sbf').forEach(b=>{b.style.width=b.dataset.w+'%'})})},{threshold:.3});
+document.querySelectorAll('.sm').forEach(el=>bo.observe(el));
+
+// Nav scroll
+const nb=document.getElementById('nb');
+const secs=document.querySelectorAll('section[id]');
+const nas=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  nb.classList.toggle('scrolled',scrollY>20);
+  let c='';secs.forEach(s=>{if(scrollY>=s.offsetTop-120)c=s.id});
+  nas.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+c)});
+},{passive:true});
+
+// Mobile nav
+const nt=document.getElementById('nt'),nl=document.getElementById('nl');
+nt.addEventListener('click',()=>{nt.classList.toggle('open');nl.classList.toggle('open')});
+nl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nt.classList.remove('open');nl.classList.remove('open')}));
+
+// Language
+document.getElementById('lt').addEventListener('click',()=>{
+  const h=document.documentElement,c=h.getAttribute('data-lang'),n=c==='fr'?'en':'fr';
+  h.setAttribute('data-lang',n);
+  document.title=n==='fr'?'Ibrahim Mahamat - Cybersécurité & Data':'Ibrahim Mahamat - Cybersecurity & Data';
+});
+
+// Demo auto-login
+function openDemo(){
+  const u=atob('ai5kdWJvaXM='),p=atob('UGFzc0Vuc2VpZ25hbnQxMjMh');
+  const f=document.createElement('form');
+  f.method='POST';f.action='https://projets.iut-orsay.fr/saes3-mibrah6/frontend-php/index.php';f.target='_blank';
+  [['id',u],['mdp',p]].forEach(([n,v])=>{const i=document.createElement('input');i.type='hidden';i.name=n;i.value=v;f.appendChild(i);});
+  document.body.appendChild(f);f.submit();document.body.removeChild(f);
+}
+
+// Contact form
+function hs(e){
+  e.preventDefault();
+  const f=document.getElementById('cfb'),l=document.documentElement.getAttribute('data-lang');
+  f.textContent=l==='fr'?'✓ Message envoyé ! (démo - connectez un backend)':'✓ Message sent! (demo - connect a backend)';
+  f.style.display='block';e.target.reset();setTimeout(()=>f.style.display='none',4000);
+}
+</script>
+</body>
+</html>
